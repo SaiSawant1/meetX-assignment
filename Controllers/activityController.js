@@ -2,13 +2,14 @@ import Activity from "../Models/Activity.js";
 
 export const createActivity = async (req, res) => {
   try {
-    const { title, description, location, date } = req.body;
+    const { title, description, location, date, time } = req.body;
 
     const newActivity = await Activity.create({
       title,
       description,
       location,
       date,
+      time,
     });
 
     res.status(201).json({
