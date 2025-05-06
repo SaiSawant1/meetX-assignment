@@ -1,4 +1,5 @@
 import { UserService } from "../Services/userService.js";
+import { validationResult } from "express-validator";
 import jwt from "jsonwebtoken";
 
 const userService = new UserService();
@@ -6,6 +7,11 @@ const userService = new UserService();
 export const registerUser = async (req, res) => {
   try {
     const user = await userService.createUser(req.body);
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
 
     res.status(201).json({
       success: true,

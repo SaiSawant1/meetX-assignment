@@ -8,13 +8,9 @@ export class UserService {
       throw Error("Fields Missing");
     }
 
-    if (password !== confirmationPassword) {
-      throw Error("Confirmation Password and Password are same");
-    }
-
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      throw Error("Confirmation Password and Password are same");
+      throw Error("User alredy exists");
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -25,6 +21,7 @@ export class UserService {
       password: hashedPassword,
       phone,
     });
+    newUser.password = undefined;
     return newUser;
   }
 
